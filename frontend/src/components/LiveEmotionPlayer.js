@@ -6,7 +6,9 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
   useEffect(() => {
     const fetchEmotion = async () => {
       try {
-        const response = await fetch("https://<your-render-url>/analyze-emotion", {
+        const BACKEND_URL = "https://aurora-lighting-system.onrender.com";
+
+        const response = await fetch(`${BACKEND_URL}/analyze-emotion`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
