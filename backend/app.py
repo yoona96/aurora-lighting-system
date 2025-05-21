@@ -60,7 +60,7 @@ def callback():
 
     if access_token:
         # ✅ 여기서 프론트엔드 주소로 redirect해야 함!
-        return redirect(f"https://aurora-lighting-system.vercel.app/callback?access_token={access_token}")
+        return redirect(f"https://aurora-lighting-system.vercel.app/?access_token={access_token}")
     else:
         return jsonify({"error": "Token 요청 실패", "detail": token_data})
     
@@ -70,7 +70,7 @@ def emotion_now():
     token = data.get("access_token")   # ✅ 프론트에서 전달받은 토큰 사용!
 
     if not token:
-        return jsonify({"error": "로그인 안됨"}), 400
+        return jsonify({"error": "로그인 안됨"}), 401
 
     hr = get_heart_rate(token)
     spo2 = get_spo2(token)
