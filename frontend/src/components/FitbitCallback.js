@@ -20,7 +20,7 @@ function FitbitCallback() {
       localStorage.setItem("access_token", token);
       console.log("✅ access_token 저장 완료:", token);
       alert("✅ 로그인 완료!");
-      window.location.href = "/";
+      window.location.href = `/?access_token=${token}`;
     } else {
       alert("❌ access_token이 없습니다.");
     }

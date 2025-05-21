@@ -8,18 +8,14 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
       try {
         const BACKEND_URL = "https://aurora-lighting-system.onrender.com";
 
-        // const response = await fetch(`${BACKEND_URL}/analyze-emotion`, {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify({
-        //     heartRate: 90,      // ★ 임시값: 나중에 Fitbit OAuth 연동되면 교체
-        //     spo2: 97,
-        //     calories: 5.2,
-        //     activityLevel: 2
-        //   })
-        // });
+        // ✅ URL 쿼리에서 access_token 추출
+        const queryParams = new URLSearchParams(window.location.search);
+        const token = queryParams.get("access_token");
 
-        const token = localStorage.getItem("access_token");
+        if (!token) {
+          console.error("❌ access_token이 URL에 없습니다.");
+          return;
+        }
 
         const response = await fetch(`${BACKEND_URL}/emotion-now`, {
           method: "POST",
@@ -35,8 +31,8 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
       }
     };
 
-    fetchEmotion(); // 최초 1회 호출
-    const intervalId = setInterval(fetchEmotion, interval); // 주기적 호출
+    fetchEmotion(); // 최초 호출
+    const intervalId = setInterval(fetchEmotion, interval);
 
     return () => clearInterval(intervalId);
   }, [interval, onEmotionChange]);
