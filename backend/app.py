@@ -37,7 +37,7 @@ def authorize():
         return jsonify({"error": "internal server error", "detail": str(e)}), 500
     # return redirect(get_authorize_url())
 
-@app.route("/callback")
+
 # def callback():
 #     code = request.args.get("code")
 #     token_data = get_token(code)
@@ -47,18 +47,20 @@ def authorize():
 #         return "✅ 로그인 성공! 이제 데이터 요청이 가능합니다."
 #     else:
 #         return jsonify({"error": "Token 요청 실패", "detail": token_data})
+@app.route("/callback")
 def callback():
     code = request.args.get("code")
-    token_data = exchange_code_for_token(code)
+    print("code:", code)  # ← 여기에 None이면 문제야
 
+    token_data = exchange_code_for_token(code)
     access_token = token_data.get("access_token")
 
     if access_token:
-        # ✅ 프론트엔드 주소에 access_token을 URL 파라미터로 전달
-        return redirect(f"https://aurora-lighting-system.onrender.com/callback?access_token={access_token}")
+        # ✅ 여기서 프론트엔드 주소로 redirect해야 함!
+        return redirect(f"https://aurora-lighting-sim.vercel.app/callback?access_token={access_token}")
     else:
         return jsonify({"error": "Token 요청 실패", "detail": token_data})
-
+    
 @app.route("/emotion-now")
 def emotion_now():
     token = token_store.get("access_token")
