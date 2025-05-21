@@ -27,7 +27,10 @@ token_store = {}
 
 @app.route("/authorize")
 def authorize():
-    return redirect(get_authorize_url())
+    url = get_authorize_url()
+    print("✅ Fitbit 인증 URL:", url)  # Render 로그에 출력됨
+    return redirect(url)
+    # return redirect(get_authorize_url())
 
 @app.route("/callback")
 def callback():
