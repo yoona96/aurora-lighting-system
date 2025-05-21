@@ -9,6 +9,8 @@ REDIRECT_URI = os.getenv("FITBIT_REDIRECT_URI", "https://aurora-lighting-system.
 
 SCOPES = ["heartrate", "oxygen_saturation", "activity"]
 
+TOKEN_URL = "https://api.fitbit.com/oauth2/token"
+
 def get_authorize_url():
     params = {
         "client_id": CLIENT_ID,
@@ -30,4 +32,19 @@ def get_token(code):
         "code": code
     }
     res = requests.post("https://api.fitbit.com/oauth2/token", headers=headers, data=data)
+    return res.json()
+
+def exchange_code_for_token(code):
+    data = {
+        "client_id": CLIENT_ID,
+        "grant_type": "authorization_code",
+        "redirect_uri": REDIRECT_URI,
+        "code": code
+    }
+    auth = b64encode(f"{CLIENT_ID}:{CLIENT_SECRET}".encode()).decode()
+    headers = {
+        "Authorization": f"Basic {auth}",
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+    res = requests.post(TOKEN_URL, headers=headers, data=data)
     return res.json()

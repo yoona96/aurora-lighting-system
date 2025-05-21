@@ -38,13 +38,24 @@ def authorize():
     # return redirect(get_authorize_url())
 
 @app.route("/callback")
+# def callback():
+#     code = request.args.get("code")
+#     token_data = get_token(code)
+
+#     if "access_token" in token_data:
+#         token_store["access_token"] = token_data["access_token"]
+#         return "✅ 로그인 성공! 이제 데이터 요청이 가능합니다."
+#     else:
+#         return jsonify({"error": "Token 요청 실패", "detail": token_data})
 def callback():
     code = request.args.get("code")
-    token_data = get_token(code)
+    token_data = exchange_code_for_token(code)
 
-    if "access_token" in token_data:
-        token_store["access_token"] = token_data["access_token"]
-        return "✅ 로그인 성공! 이제 데이터 요청이 가능합니다."
+    access_token = token_data.get("access_token")
+
+    if access_token:
+        # ✅ 프론트엔드 주소에 access_token을 URL 파라미터로 전달
+        return redirect(f"https://aurora-lighting-system.onrender.com/callback?access_token={access_token}")
     else:
         return jsonify({"error": "Token 요청 실패", "detail": token_data})
 
