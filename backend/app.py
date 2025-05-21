@@ -4,7 +4,7 @@ from emotion_analyzer import infer_emotion
 from fitbit_auth import get_authorize_url, get_token, exchange_code_for_token
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://aurora-lighting-system.vercel.app"])
 
 @app.route("/")
 def home():
@@ -69,8 +69,10 @@ def emotion_now():
     data = request.get_json()
     token = data.get("access_token")   # ✅ 프론트에서 전달받은 토큰 사용!
 
+    print("🔐 전달받은 토큰:", token)
+
     if not token:
-        return jsonify({"error": "로그인 안됨"}), 401
+        return jsonify({"error": "로그인 안됨"}), 402
 
     hr = get_heart_rate(token)
     spo2 = get_spo2(token)

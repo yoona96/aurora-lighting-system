@@ -32,6 +32,7 @@ def get_token(code):
         "code": code
     }
     res = requests.post("https://api.fitbit.com/oauth2/token", headers=headers, data=data)
+    print("Fitbit 응답:", res.status_code, res.text)
     return res.json()
 
 def exchange_code_for_token(code):
@@ -47,4 +48,5 @@ def exchange_code_for_token(code):
         "Content-Type": "application/x-www-form-urlencoded"
     }
     res = requests.post(TOKEN_URL, headers=headers, data=data)
+    print("Fitbit 응답:", res.status_code, res.text)
     return res.json()
