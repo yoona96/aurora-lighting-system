@@ -1,9 +1,10 @@
+from flask_cors import CORS
 from flask import Flask, request, jsonify, redirect
 from emotion_analyzer import infer_emotion
 from fitbit_auth import get_authorize_url, get_token, exchange_code_for_token
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route("/")
 def home():
