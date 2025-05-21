@@ -2,22 +2,13 @@ import React, { useEffect } from "react";
 
 function FitbitCallback() {
   useEffect(() => {
-    // URL 쿼리 파라미터 확인
-    const queryParams = new URLSearchParams(window.location.search);
-    let token = queryParams.get("access_token");
-
-    console.log("🔍 query token:", token);
-
-    // 또는 해시(#)로 넘어온 경우 처리
-    if (!token && window.location.hash) {
-      const hashParams = new URLSearchParams(window.location.hash.substring(1));
-      token = hashParams.get("access_token");
-
-      console.log("🔍 hash token:", token);
-    }
+    let token =
+      new URLSearchParams(window.location.search).get("access_token") ||
+      new URLSearchParams(window.location.hash.substring(1)).get("access_token");
 
     if (token) {
-      alert("✅ 로그인 완료!");
+      console.log("✅ access_token 추출됨:", token);
+      // 👉 이게 핵심: /로 이동하면서 쿼리로 token 넘김
       window.location.href = `/?access_token=${token}`;
     } else {
       alert("❌ access_token이 없습니다.");

@@ -72,7 +72,7 @@ def emotion_now():
     print("🔐 전달받은 토큰:", token)
 
     if not token:
-        return jsonify({"error": "로그인 안됨"}), 400
+        return jsonify({"error": "로그인 안됨"}), 401
 
     hr = get_heart_rate(token)
     spo2 = get_spo2(token)
