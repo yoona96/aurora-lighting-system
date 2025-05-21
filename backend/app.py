@@ -38,16 +38,6 @@ def authorize():
         return jsonify({"error": "internal server error", "detail": str(e)}), 500
     # return redirect(get_authorize_url())
 
-
-# def callback():
-#     code = request.args.get("code")
-#     token_data = get_token(code)
-
-#     if "access_token" in token_data:
-#         token_store["access_token"] = token_data["access_token"]
-#         return "✅ 로그인 성공! 이제 데이터 요청이 가능합니다."
-#     else:
-#         return jsonify({"error": "Token 요청 실패", "detail": token_data})
 @app.route("/callback")
 def callback():
     code = request.args.get("code")

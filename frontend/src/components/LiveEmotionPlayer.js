@@ -4,6 +4,7 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
   const [emotion, setEmotion] = useState("보통");
 
   useEffect(() => {
+    console.log("🔍 LiveEmotionPlayer MOUNTED");
     const BACKEND_URL = "https://aurora-lighting-system.onrender.com";
 
     let token = new URLSearchParams(window.location.search).get("access_token");
