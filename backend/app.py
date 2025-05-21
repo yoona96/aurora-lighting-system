@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 from emotion_analyzer import infer_emotion
+from fitbit_auth import get_authorize_url, get_token
 
 app = Flask(__name__)
 
