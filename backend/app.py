@@ -62,12 +62,14 @@ def callback():
     else:
         return jsonify({"error": "Token 요청 실패", "detail": token_data})
     
-@app.route("/emotion-now")
+@app.route("/emotion-now", methods=["POST"])
 def emotion_now():
-    token = token_store.get("access_token")
+    data = request.get_json()
+    token = data.get("access_token")   # ✅ 프론트에서 전달받은 토큰 사용!
+
     if not token:
         return jsonify({"error": "로그인 안됨"}), 400
-    
+
     hr = get_heart_rate(token)
     spo2 = get_spo2(token)
     cal = get_calories(token)
@@ -77,7 +79,6 @@ def emotion_now():
 
     emotion = infer_emotion(hr, spo2, cal, act)
     return jsonify({"emotion": emotion})
-
     # headers = {"Authorization": f"Bearer {token}"}
     # resp = requests.get("https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min.json", headers=headers)
 
