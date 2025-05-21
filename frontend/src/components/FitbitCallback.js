@@ -6,14 +6,19 @@ function FitbitCallback() {
     const queryParams = new URLSearchParams(window.location.search);
     let token = queryParams.get("access_token");
 
+    console.log("🔍 query token:", token);
+
     // 또는 해시(#)로 넘어온 경우 처리
     if (!token && window.location.hash) {
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       token = hashParams.get("access_token");
+
+      console.log("🔍 hash token:", token);
     }
 
     if (token) {
       localStorage.setItem("access_token", token);
+      console.log("✅ access_token 저장 완료:", token);
       alert("✅ 로그인 완료!");
       window.location.href = "/";
     } else {
