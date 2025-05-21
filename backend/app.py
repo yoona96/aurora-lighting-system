@@ -57,7 +57,7 @@ def callback():
 
     if access_token:
         # ✅ 여기서 프론트엔드 주소로 redirect해야 함!
-        return redirect(f"https://aurora-lighting-sim.vercel.app/callback?access_token={access_token}")
+        return redirect(f"https://aurora-lighting-system.vercel.app/callback?access_token={access_token}")
     else:
         return jsonify({"error": "Token 요청 실패", "detail": token_data})
     
