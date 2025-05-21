@@ -17,8 +17,6 @@ function FitbitCallback() {
     }
 
     if (token) {
-      localStorage.setItem("access_token", token);
-      console.log("✅ access_token 저장 완료:", token);
       alert("✅ 로그인 완료!");
       window.location.href = `/?access_token=${token}`;
     } else {

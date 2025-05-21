@@ -59,7 +59,7 @@ def callback():
     token_store["access_token"] = access_token
 
     if access_token:
-        # ✅ 여기서 프론트엔드 주소로 redirect해야 함!
+        # access_token을 query로만 전달하고 hash는 제거
         return redirect(f"https://aurora-lighting-system.vercel.app/?access_token={access_token}")
     else:
         return jsonify({"error": "Token 요청 실패", "detail": token_data})
