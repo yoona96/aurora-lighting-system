@@ -6,6 +6,8 @@ def get_heart_rate(token):
     today = datetime.date.today().isoformat()
     url = f"https://api.fitbit.com/1/user/-/activities/heart/date/{today}/1d/1min.json"
     res = requests.get(url, headers=headers).json()
+    print("✅ Fitbit 응답 상태코드:", res.status_code)
+    print("✅ 응답 내용:", res.text)
     try:
         series = res["activities-heart-intraday"]["dataset"]
         if not series:
@@ -18,6 +20,8 @@ def get_spo2(token):
     headers = {"Authorization": f"Bearer {token}"}
     url = "https://api.fitbit.com/1/user/-/spo2/date/today.json"
     res = requests.get(url, headers=headers).json()
+    print("✅ Fitbit 응답 상태코드:", res.status_code)
+    print("✅ 응답 내용:", res.text)
     try:
         return res["spo2"]["value"]
     except:
@@ -28,6 +32,8 @@ def get_activity_level(token):
     today = datetime.date.today().isoformat()
     url = f"https://api.fitbit.com/1/user/-/activities/date/{today}.json"
     res = requests.get(url, headers=headers).json()
+    print("✅ Fitbit 응답 상태코드:", res.status_code)
+    print("✅ 응답 내용:", res.text)
     try:
         lightly = res["summary"]["lightlyActiveMinutes"]
         fairly = res["summary"]["fairlyActiveMinutes"]
