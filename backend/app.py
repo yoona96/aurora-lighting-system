@@ -50,8 +50,8 @@ def authorize():
 @app.route("/callback")
 def callback():
     code = request.args.get("code")
-    print("code:", code)  # ← 여기에 None이면 문제야
-
+    print("code:", code) 
+    
     token_data = exchange_code_for_token(code)
     access_token = token_data.get("access_token")
 
