@@ -4,19 +4,18 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
   const [emotion, setEmotion] = useState("보통");
 
   useEffect(() => {
-    // ✅ STEP 1: 쿼리에서 access_token 추출
-    const queryParams = new URLSearchParams(window.location.search);
-    let token = queryParams.get("access_token");
+    const BACKEND_URL = "https://aurora-lighting-system.onrender.com";
 
-    // ✅ STEP 2: localStorage에 저장 (한 번만)
+    let token = new URLSearchParams(window.location.search).get("access_token");
+
     if (token) {
+      console.log("✅ 쿼리에서 토큰 추출됨:", token);
       localStorage.setItem("access_token", token);
-      // 👉 token이 URL에 노출되지 않도록 제거
-      const cleanURL = window.location.origin + window.location.pathname;
-      window.history.replaceState({}, document.title, cleanURL);
+      // URL에서 토큰 제거
+      window.history.replaceState({}, document.title, window.location.pathname);
     } else {
-      // ✅ STEP 3: localStorage에서 불러오기 (이미 저장된 경우)
       token = localStorage.getItem("access_token");
+      console.log("ℹ️ localStorage에서 불러온 토큰:", token);
     }
 
     if (!token) {
@@ -24,18 +23,16 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
       return;
     }
 
-    // ✅ STEP 4: 감정 정보 가져오기
     const fetchEmotion = async () => {
       try {
-        const BACKEND_URL = "https://aurora-lighting-system.onrender.com";
-
         const response = await fetch(`${BACKEND_URL}/emotion-now`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ access_token: token })
+          body: JSON.stringify({ access_token: token }),
         });
 
         const data = await response.json();
+        console.log("🎯 emotion-now 응답:", data);
         setEmotion(data.emotion);
         onEmotionChange(data.emotion);
       } catch (err) {
