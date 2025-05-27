@@ -58,7 +58,9 @@ def callback():
 def emotion_now():
     print("📥 request.json:", request.get_json())
     data = request.get_json()
-    token = data.get("access_token") if data else None
+    # token = data.get("access_token") if data else 
+    token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyM1FIWlMiLCJzdWIiOiJDSzlHM0giLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyb3h5IHJociByYWN0IiwiZXhwIjoxNzQ4MzczMDM1LCJpYXQiOjE3NDgzNDQyMzV9.T7ihLAKdhpKWJv4zE3nxAslmAfBWUb-ScLIXaTgo0-M"
+    
 
     print("🔐 전달받은 토큰:", token)
 
