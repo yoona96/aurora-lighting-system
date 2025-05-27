@@ -14,7 +14,7 @@ def get_heart_rate(token):
         data = res.json()
         series = data.get("activities-heart-intraday", {}).get("dataset", [])
         if not series:
-            return None, f"📭 HR: 빈 데이터셋 - status {status}, res {raw[:150]}"
+            return 75, f"📭 HR: 빈 데이터셋 - status {status}, res {raw[:150]}"
         return series[-1]["value"], f"✅ HR OK - {series[-1]['value']}"
     except Exception as e:
         return 75, f"❌ HR 실패 (fallback=75) - {str(e)}"

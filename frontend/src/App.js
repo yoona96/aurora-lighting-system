@@ -32,7 +32,7 @@ function App() {
           element={
             <>
               <h1>오로라 라이팅 시스템</h1>
-              <LiveEmotionPlayer onEmotionChange={setEmotion} interval={5000} />
+              <LiveEmotionPlayer onEmotionChange={setEmotion} interval={30000} />
               <LightingDisplay emotion={emotion} />
             </>
           }
