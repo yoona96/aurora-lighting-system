@@ -5,60 +5,79 @@ def get_heart_rate(token):
     headers = {"Authorization": f"Bearer {token}"}
     today = datetime.date.today().isoformat()
     url = f"https://api.fitbit.com/1/user/-/activities/heart/date/{today}/1d/1min.json"
-    res = requests.get(url, headers=headers)
-    print("✅ Fitbit 응답 상태코드:", res.status_code)
-    print("✅ 응답 내용:", res.text)
+
     try:
-        res = res.json()
-        series = res["activities-heart-intraday"]["dataset"]
+        res = requests.get(url, headers=headers)
+        status = res.status_code
+        raw = res.text
+
+        data = res.json()
+        series = data.get("activities-heart-intraday", {}).get("dataset", [])
         if not series:
-            return None
-        return series[-1]["value"]  # 가장 마지막 값
-    except:
-        return None
+            return None, f"📭 HR: 빈 데이터셋 - status {status}, res {raw[:150]}"
+        return series[-1]["value"], f"✅ HR OK - {series[-1]['value']}"
+    except Exception as e:
+        return None, f"❌ HR 실패 - {str(e)}"
+
 
 def get_spo2(token):
     headers = {"Authorization": f"Bearer {token}"}
     url = "https://api.fitbit.com/1/user/-/spo2/date/today.json"
-    res = requests.get(url, headers=headers)
-    print("✅ Fitbit 응답 상태코드:", res.status_code)
-    print("✅ 응답 내용:", res.text)
+
     try:
-        res = res.json()
-        return res["spo2"]["value"]
-    except:
-        return 97  # 값 없을 경우 대체값
+        res = requests.get(url, headers=headers)
+        status = res.status_code
+        raw = res.text
+
+        data = res.json()
+        value = data.get("spo2", {}).get("value", 97)
+        return value, f"✅ SpO2 OK - {value}"
+    except Exception as e:
+        return 97, f"❌ SpO2 실패 - {str(e)}"
+
 
 def get_activity_level(token):
     headers = {"Authorization": f"Bearer {token}"}
     today = datetime.date.today().isoformat()
     url = f"https://api.fitbit.com/1/user/-/activities/date/{today}.json"
-    res = requests.get(url, headers=headers)
-    print("✅ Fitbit 응답 상태코드:", res.status_code)
-    print("✅ 응답 내용:", res.text)
+
     try:
-        res = res.json()
-        lightly = res["summary"]["lightlyActiveMinutes"]
-        fairly = res["summary"]["fairlyActiveMinutes"]
-        very = res["summary"]["veryActiveMinutes"]
+        res = requests.get(url, headers=headers)
+        status = res.status_code
+        raw = res.text
+
+        data = res.json()
+        summary = data.get("summary", {})
+        lightly = summary.get("lightlyActiveMinutes", 0)
+        fairly = summary.get("fairlyActiveMinutes", 0)
+        very = summary.get("veryActiveMinutes", 0)
+
         if very > 30:
-            return 3
+            level = 3
         elif fairly > 30:
-            return 2
+            level = 2
         elif lightly > 30:
-            return 1
+            level = 1
         else:
-            return 0
-    except:
-        return 0
+            level = 0
+
+        return level, f"✅ 활동량 OK - level {level} (L:{lightly} / F:{fairly} / V:{very})"
+    except Exception as e:
+        return 0, f"❌ 활동량 실패 - {str(e)}"
+
 
 def get_calories(token):
     headers = {"Authorization": f"Bearer {token}"}
     today = datetime.date.today().isoformat()
     url = f"https://api.fitbit.com/1/user/-/activities/date/{today}.json"
-    res = requests.get(url, headers=headers)
+
     try:
-        res = res.json()
-        return res["summary"]["caloriesOut"] / 24 / 60  # 1분당 가정
-    except:
-        return 3.0
+        res = requests.get(url, headers=headers)
+        status = res.status_code
+        raw = res.text
+
+        data = res.json()
+        cal = data.get("summary", {}).get("caloriesOut", 4320) / (24 * 60)
+        return cal, f"✅ 칼로리 OK - {cal:.2f} cal/min"
+    except Exception as e:
+        return 3.0, f"❌ 칼로리 실패 - {str(e)}"
