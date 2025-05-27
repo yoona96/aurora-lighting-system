@@ -7,13 +7,15 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    let extractedToken = queryParams.get("access_token");
+    // let extractedToken = queryParams.get("access_token");
+    let extractedToken = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyM1FIWlMiLCJzdWIiOiJDSzlHM0giLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyb3h5IHJociByYWN0IiwiZXhwIjoxNzQ4MzczMDM1LCJpYXQiOjE3NDgzNDQyMzV9.T7ihLAKdhpKWJv4zE3nxAslmAfBWUb-ScLIXaTgo0-M"
 
     if (!extractedToken && window.location.hash) {
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       extractedToken = hashParams.get("access_token");
     }
 
+    
     setToken(extractedToken);
     setLog(prev => [...prev, `🔍 URL에서 추출된 토큰: ${extractedToken || "없음"}`]);
 
