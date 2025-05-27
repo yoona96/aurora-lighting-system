@@ -2,6 +2,7 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify, redirect
 from emotion_analyzer import infer_emotion
 from fitbit_auth import get_authorize_url, get_token, exchange_code_for_token
+from fitbit_api import get_heart_rate, get_spo2, get_calories, get_activity_level
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://aurora-lighting-system.vercel.app"}})
