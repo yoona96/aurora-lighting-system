@@ -9,6 +9,8 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
     const queryParams = new URLSearchParams(window.location.search);
     let extractedToken = queryParams.get("access_token");
 
+    console.log("🧪 추출된 토큰:", extractedToken);
+
     if (!extractedToken && window.location.hash) {
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       extractedToken = hashParams.get("access_token");

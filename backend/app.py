@@ -56,13 +56,14 @@ def callback():
     
 @app.route("/emotion-now", methods=["POST"])
 def emotion_now():
+    print("📥 request.json:", request.get_json())
     data = request.get_json()
-    token = data.get("access_token")   # ✅ 프론트에서 전달받은 토큰 사용!
+    token = data.get("access_token") if data else None
 
     print("🔐 전달받은 토큰:", token)
 
     if not token:
-        return jsonify({"error": "로그인 안됨"}), 401
+        return jsonify({"error": "로그인 안됨"}), 400
 
     hr = get_heart_rate(token)
     spo2 = get_spo2(token)
