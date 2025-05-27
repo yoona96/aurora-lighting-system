@@ -56,36 +56,47 @@ def callback():
         return jsonify({"error": "Token 요청 실패", "detail": token_data})
     
 @app.route("/emotion-now", methods=["POST"])
-def emotion_now():
-    print("📥 request.json:", request.get_json())
-    # data = request.get_json()
-    # token = data.get("access_token") if data else 
-    token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyM1FIWlMiLCJzdWIiOiJDSzlHM0giLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyb3h5IHJociByYWN0IiwiZXhwIjoxNzQ4MzczMDM1LCJpYXQiOjE3NDgzNDQyMzV9.T7ihLAKdhpKWJv4zE3nxAslmAfBWUb-ScLIXaTgo0-M"
+# def emotion_now():
+#     print("📥 request.json:", request.get_json())
+#     # data = request.get_json()
+#     # token = data.get("access_token") if data else 
+#     token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyM1FIWlMiLCJzdWIiOiJDSzlHM0giLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyb3h5IHJociByYWN0IiwiZXhwIjoxNzQ4MzczMDM1LCJpYXQiOjE3NDgzNDQyMzV9.T7ihLAKdhpKWJv4zE3nxAslmAfBWUb-ScLIXaTgo0-M"
     
 
-    print("🔐 전달받은 토큰:", token)
+#     print("🔐 전달받은 토큰:", token)
 
-    if not token:
-        return jsonify({"error": "로그인 안됨"}), 400
+#     if not token:
+#         return jsonify({"error": "로그인 안됨"}), 400
 
-    hr = get_heart_rate(token)
-    spo2 = get_spo2(token)
-    cal = get_calories(token)
-    act = get_activity_level(token)
+#     hr = get_heart_rate(token)
+#     spo2 = get_spo2(token)
+#     cal = get_calories(token)
+#     act = get_activity_level(token)
 
-    print(f"🔍 받은 데이터: HR={hr}, SpO₂={spo2}, 칼로리={cal}, 활동={act}")
+#     print(f"🔍 받은 데이터: HR={hr}, SpO₂={spo2}, 칼로리={cal}, 활동={act}")
 
-    emotion = infer_emotion(hr, spo2, cal, act)
-    return jsonify({"emotion": emotion})
-    # headers = {"Authorization": f"Bearer {token}"}
-    # resp = requests.get("https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min.json", headers=headers)
+#     emotion = infer_emotion(hr, spo2, cal, act)
+#     return jsonify({"emotion": emotion})
 
-    # if resp.status_code != 200:
-    #     return jsonify({"error": "토큰 만료 또는 오류", "detail": resp.json()}), 401
+def emotion_now():
+    try:
+        # token = request.get_json().get("access_token")
+        token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyM1FIWlMiLCJzdWIiOiJDSzlHM0giLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyb3h5IHJociByYWN0IiwiZXhwIjoxNzQ4MzczMDM1LCJpYXQiOjE3NDgzNDQyMzV9.T7ihLAKdhpKWJv4zE3nxAslmAfBWUb-ScLIXaTgo0-M"
+        hr = get_heart_rate(token)
+        spo2 = get_spo2(token)
+        cal = get_calories(token)
+        act = get_activity_level(token)
+        emotion = infer_emotion(hr, spo2, cal, act)
 
-    # # 예시: 최근 심박수 추출
-    # heart_data = resp.json()["activities-heart-intraday"]["dataset"]
-    # latest_heart = heart_data[-1]["value"] if heart_data else 75
-
-    # emotion = infer_emotion(latest_heart, spo2=97)  # 임시로 spo2 하드코딩
-    # return jsonify({"emotion": emotion})
+        return jsonify({
+            "emotion": emotion,
+            "debug": {
+                "hr": hr,
+                "spo2": spo2,
+                "cal": cal,
+                "act": act,
+                "token": token
+            }
+        })
+    except Exception as e:
+        return jsonify({"error": "예외 발생", "message": str(e)})
