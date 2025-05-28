@@ -17,11 +17,11 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
 
     
     setToken(extractedToken);
-    setLog(prev => [...prev, `🔍 URL에서 추출된 토큰: ${extractedToken || "없음"}`]);
+    //setLog(prev => [...prev, `🔍 URL에서 추출된 토큰: ${extractedToken || "없음"}`]);
 
     const fetchEmotion = async () => {
       try {
-        setLog(prev => [...prev, "📡 감정 요청 시작..."]);
+        //setLog(prev => [...prev, "📡 감정 요청 시작..."]);
 
         const response = await fetch("https://aurora-lighting-system.onrender.com/emotion-now", {
           method: "POST",
@@ -31,16 +31,16 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
 
         if (!response.ok) {
           const errorText = await response.text();
-          setLog(prev => [...prev, `❌ 응답 실패: ${response.status} ${response.statusText}`, errorText]);
+          //setLog(prev => [...prev, `❌ 응답 실패: ${response.status} ${response.statusText}`, errorText]);
           return;
         }
 
         const data = await response.json();
         setEmotion(data.emotion);
         onEmotionChange(data.emotion);
-        setLog(prev => [...prev, `✅ 감정 수신: ${data.emotion}`]);
+        //setLog(prev => [...prev, `✅ 감정 수신: ${data.emotion}`]);
       } catch (err) {
-        setLog(prev => [...prev, `❌ 네트워크 오류: ${err.message}`]);
+        //setLog(prev => [...prev, `❌ 네트워크 오류: ${err.message}`]);
       }
     };
 
@@ -49,7 +49,7 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
       const intervalId = setInterval(fetchEmotion, interval);
       return () => clearInterval(intervalId);
     } else {
-      setLog(prev => [...prev, "⚠️ access_token이 없어서 요청하지 않음"]);
+      //setLog(prev => [...prev, "⚠️ access_token이 없어서 요청하지 않음"]);
     }
   }, [interval, onEmotionChange]);
 

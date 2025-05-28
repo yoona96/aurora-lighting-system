@@ -7,7 +7,7 @@ function FitbitCallback() {
       new URLSearchParams(window.location.hash.substring(1)).get("access_token");
 
     if (token) {
-      console.log("✅ access_token 추출됨:", token);
+      //console.log("✅ access_token 추출됨:", token);
       // 👉 이게 핵심: /로 이동하면서 쿼리로 token 넘김
       window.location.href = `/?access_token=${token}`;
     } else {
