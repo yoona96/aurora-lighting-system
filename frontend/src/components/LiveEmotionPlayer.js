@@ -26,7 +26,8 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
         const response = await fetch("https://aurora-lighting-system.onrender.com/emotion-now", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ access_token: extractedToken })
+          body: 
+          //JSON.stringify({ access_token: extractedToken })
         });
 
         if (!response.ok) {
