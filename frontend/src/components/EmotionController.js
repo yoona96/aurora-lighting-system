@@ -4,7 +4,9 @@ function EmotionController({ onEmotionChange, interval = 5000 }) {
   const [emotion, setEmotion] = useState("보통");
   const [token, setToken] = useState(null);
   const [manualOverride, setManualOverride] = useState(false);
-  const overrideTimer = useRef(null); // 수동 모드 타이머 참조
+  const [timeLeft, setTimeLeft] = useState(0);
+  const overrideTimer = useRef(null);
+  const countdownInterval = useRef(null);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -47,14 +49,26 @@ function EmotionController({ onEmotionChange, interval = 5000 }) {
 
   const handleManualEmotion = (selectedEmotion) => {
     setManualOverride(true);
-    clearTimeout(overrideTimer.current); // 기존 타이머 제거
+    clearTimeout(overrideTimer.current);
+    clearInterval(countdownInterval.current);
+
     setEmotion(selectedEmotion);
     onEmotionChange(selectedEmotion);
 
-    // 일정 시간 후 자동 수신 재개
+    setTimeLeft(60);
+    countdownInterval.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(countdownInterval.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
     overrideTimer.current = setTimeout(() => {
       setManualOverride(false);
-    }, 60000); // 60초 후 자동 모드 복귀
+    }, 60000);
   };
 
   const emotions = ["이완", "스트레스", "집중", "피로", "긍정", "보통"];
@@ -62,6 +76,13 @@ function EmotionController({ onEmotionChange, interval = 5000 }) {
   return (
     <div>
       <h3 style={{ marginBottom: "10px" }}>감정 선택 또는 실시간 감정 반영</h3>
+
+      <div style={{ marginBottom: "15px", fontWeight: "bold", color: manualOverride ? "#d35400" : "#2c3e50" }}>
+        {manualOverride
+          ? `✋ 수동 모드 (자동 복귀까지 ${timeLeft}초)`
+          : "🔄 자동 감정 수신 중"}
+      </div>
+
       <div style={{
         display: "flex",
         justifyContent: "center",
