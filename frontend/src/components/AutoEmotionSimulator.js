@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import EmotionController from "./EmotionController"; // 새 통합 컴포넌트
+import EmotionController from "./EmotionController";
 import LightingDisplay from "./LightingDisplay";
 
 function AutoEmotionSimulator() {

@@ -1,5 +1,6 @@
 import React from "react";
 
+// 감정별 색상 정의
 const emotionColors = {
   이완: "#FFDAB9",     // peach puff
   스트레스: "#87CEFA", // light blue
@@ -10,19 +11,24 @@ const emotionColors = {
 };
 
 function LightingDisplay({ emotion }) {
-  const bgColor = emotionColors[emotion] || "#ffffff";
+  const bgColor = emotionColors[emotion] || "#FFFFFF"; // 감정이 없을 경우 흰색
+
+  const style = {
+    backgroundColor: bgColor,
+    width: "100%",
+    height: "300px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "1.5rem",
+    border: "2px solid #ccc",
+    borderRadius: "10px",
+    transition: "background-color 0.8s ease" // 부드러운 색상 전환
+  };
 
   return (
-    <div
-      style={{
-        backgroundColor: bgColor,
-        padding: "60px",
-        textAlign: "center",
-        transition: "background-color 1.2s ease-in-out", // 🎯 부드러운 전환 핵심
-        minHeight: "200px",
-      }}
-    >
-      <h1>{emotion ? `현재 감정: ${emotion}` : "감정을 선택하세요"}</h1>
+    <div style={style}>
+      현재 조명 색상: {bgColor} ({emotion})
     </div>
   );
 }

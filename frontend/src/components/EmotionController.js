@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function EmotionController({ interval = 5000 }) {
+function EmotionController({ onEmotionChange, interval = 5000 }) {
   const [emotion, setEmotion] = useState("보통");
   const [token, setToken] = useState(null);
 
@@ -27,36 +27,34 @@ function EmotionController({ interval = 5000 }) {
 
         const data = await response.json();
         setEmotion(data.emotion);
+        onEmotionChange(data.emotion);
       } catch (err) {
-        // 에러 처리
+        // 에러는 무시
       }
     };
 
     if (extractedToken) {
-      fetchEmotion(); // 최초 1회
+      fetchEmotion();
       const intervalId = setInterval(fetchEmotion, interval);
       return () => clearInterval(intervalId);
     }
-  }, [interval]);
+  }, [interval, onEmotionChange]);
 
-  const handleEmotionChange = (e) => {
-    const selectedEmotion = e.target.value;
+  const handleManualEmotion = (selectedEmotion) => {
     setEmotion(selectedEmotion);
-    // 여기에 조명 제어 로직 추가
+    onEmotionChange(selectedEmotion);
   };
 
   return (
     <div style={{ padding: "20px", fontFamily: "monospace" }}>
       <h3>현재 감정 상태: {emotion}</h3>
-      <label>
-        감정 선택:
-        <select value={emotion} onChange={handleEmotionChange}>
-          <option value="기쁨">기쁨</option>
-          <option value="슬픔">슬픔</option>
-          <option value="분노">분노</option>
-          <option value="보통">보통</option>
-        </select>
-      </label>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "10px" }}>
+        <button onClick={() => handleManualEmotion("이완")}>😌 이완</button>
+        <button onClick={() => handleManualEmotion("스트레스")}>😫 스트레스</button>
+        <button onClick={() => handleManualEmotion("집중")}>🎯 집중</button>
+        <button onClick={() => handleManualEmotion("피로")}>😴 피로</button>
+        <button onClick={() => handleManualEmotion("긍정")}>😊 긍정</button>
+      </div>
     </div>
   );
 }
