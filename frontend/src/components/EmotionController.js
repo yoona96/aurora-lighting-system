@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 function EmotionController({ onEmotionChange, interval = 5000 }) {
   const [emotion, setEmotion] = useState("보통");
   const [token, setToken] = useState(null);
+  const [manualOverride, setManualOverride] = useState(false);
+  const overrideTimer = useRef(null); // 수동 모드 타이머 참조
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -26,9 +28,14 @@ function EmotionController({ onEmotionChange, interval = 5000 }) {
         if (!response.ok) return;
 
         const data = await response.json();
-        setEmotion(data.emotion);
-        onEmotionChange(data.emotion);
-      } catch (err) {}
+
+        if (!manualOverride) {
+          setEmotion(data.emotion);
+          onEmotionChange(data.emotion);
+        }
+      } catch (err) {
+        // 무시
+      }
     };
 
     if (extractedToken) {
@@ -36,11 +43,18 @@ function EmotionController({ onEmotionChange, interval = 5000 }) {
       const intervalId = setInterval(fetchEmotion, interval);
       return () => clearInterval(intervalId);
     }
-  }, [interval, onEmotionChange]);
+  }, [interval, onEmotionChange, manualOverride]);
 
   const handleManualEmotion = (selectedEmotion) => {
+    setManualOverride(true);
+    clearTimeout(overrideTimer.current); // 기존 타이머 제거
     setEmotion(selectedEmotion);
     onEmotionChange(selectedEmotion);
+
+    // 일정 시간 후 자동 수신 재개
+    overrideTimer.current = setTimeout(() => {
+      setManualOverride(false);
+    }, 60000); // 60초 후 자동 모드 복귀
   };
 
   const emotions = ["이완", "스트레스", "집중", "피로", "긍정", "보통"];
