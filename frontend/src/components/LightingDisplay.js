@@ -1,34 +1,33 @@
 import React from "react";
 
-// 감정별 색상 정의
 const emotionColors = {
-  이완: "#FFDAB9",     // peach puff
-  스트레스: "#87CEFA", // light blue
-  집중: "#F0E68C",     // khaki
-  피로: "#D3D3D3",     // light gray
-  긍정: "#90EE90",     // light green
-  보통: "#F5F5F5"      // very light gray
+  이완: "#FFDAB9",
+  스트레스: "#87CEFA",
+  집중: "#F0E68C",
+  피로: "#D3D3D3",
+  긍정: "#90EE90",
+  보통: "#F5F5F5"
 };
 
 function LightingDisplay({ emotion }) {
-  const bgColor = emotionColors[emotion] || "#FFFFFF"; // 감정이 없을 경우 흰색
+  const bgColor = emotionColors[emotion] || "#FFFFFF";
 
   const style = {
     backgroundColor: bgColor,
     width: "100%",
-    height: "300px",
+    height: "250px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     fontSize: "1.5rem",
-    border: "2px solid #ccc",
     borderRadius: "10px",
-    transition: "background-color 0.8s ease" // 부드러운 색상 전환
+    transition: "background-color 0.8s ease",
+    border: "1px solid #ddd"
   };
 
   return (
     <div style={style}>
-      현재 조명 색상: {bgColor} ({emotion})
+      현재 감정: <strong style={{ marginLeft: "10px" }}>{emotion}</strong>
     </div>
   );
 }

@@ -28,9 +28,7 @@ function EmotionController({ onEmotionChange, interval = 5000 }) {
         const data = await response.json();
         setEmotion(data.emotion);
         onEmotionChange(data.emotion);
-      } catch (err) {
-        // 에러는 무시
-      }
+      } catch (err) {}
     };
 
     if (extractedToken) {
@@ -45,15 +43,34 @@ function EmotionController({ onEmotionChange, interval = 5000 }) {
     onEmotionChange(selectedEmotion);
   };
 
+  const emotions = ["이완", "스트레스", "집중", "피로", "긍정", "보통"];
+
   return (
-    <div style={{ padding: "20px", fontFamily: "monospace" }}>
-      <h3>현재 감정 상태: {emotion}</h3>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "10px" }}>
-        <button onClick={() => handleManualEmotion("이완")}>😌 이완</button>
-        <button onClick={() => handleManualEmotion("스트레스")}>😫 스트레스</button>
-        <button onClick={() => handleManualEmotion("집중")}>🎯 집중</button>
-        <button onClick={() => handleManualEmotion("피로")}>😴 피로</button>
-        <button onClick={() => handleManualEmotion("긍정")}>😊 긍정</button>
+    <div>
+      <h3 style={{ marginBottom: "10px" }}>감정 선택 또는 실시간 감정 반영</h3>
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        gap: "10px"
+      }}>
+        {emotions.map((emo) => (
+          <button
+            key={emo}
+            onClick={() => handleManualEmotion(emo)}
+            style={{
+              padding: "10px 20px",
+              fontSize: "1rem",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
+              backgroundColor: "#fff",
+              cursor: "pointer",
+              boxShadow: "1px 1px 5px rgba(0,0,0,0.1)"
+            }}
+          >
+            {emo}
+          </button>
+        ))}
       </div>
     </div>
   );
