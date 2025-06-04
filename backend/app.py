@@ -31,8 +31,13 @@ def analyze():
     calories = data.get("calories")
     activity = data.get("activityLevel")
 
-    emotion = infer_emotion(heart_rate, spo2, calories, activity)
-    return jsonify({"emotion": emotion})
+    # emotion = infer_emotion(heart_rate, spo2, calories, activity)
+    # return jsonify({"emotion": emotion})
+    emotion, debug_info = infer_emotion(heart_rate, spo2, calories, activity)
+    return jsonify({
+        "emotion": emotion,
+        "calculation": debug_info
+    })
 
 app.secret_key = "super_secret"  # Render에서 환경변수로 관리 추천
 
