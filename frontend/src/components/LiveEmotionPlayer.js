@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 
 function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
   const [emotion, setEmotion] = useState("보통");
+  const [rawData, setRawData] = useState({});
+  const [lastUpdate, setLastUpdate] = useState("");
+  const [token, setToken] = useState(null);          // 화면에 표시할 토큰
+  const [log, setLog] = useState([]);                // 화면에 누적 출력할 로그
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -24,6 +28,8 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
 
         const data = await response.json();
         setEmotion(data.emotion);
+        setRawData(data);
+        setLastUpdate(new Date().toLocaleTimeString());
         onEmotionChange(data.emotion);
       } catch (err) {
         // 에러는 조용히 무시
@@ -38,8 +44,15 @@ function LiveEmotionPlayer({ onEmotionChange, interval = 5000 }) {
   }, [interval, onEmotionChange]);
 
   return (
-    <div style={{ padding: "20px", fontFamily: "monospace" }}>
-      <h3>현재 감정 상태: {emotion}</h3>
+    <div>
+      <div>현재 감정 상태: {emotion}</div>
+      <div style={{ fontSize: "14px", marginTop: "10px" }}>
+        <p>❤️ 심박수: {rawData.heartRate}</p>
+        <p>🌬️ 산소포화도: {rawData.spo2}</p>
+        <p>🔥 칼로리: {rawData.calories}</p>
+        <p>🏃 활동: {rawData.activityLevel}</p>
+        <p>⏰ 마지막 갱신: {lastUpdate}</p>
+      </div>
     </div>
   );
 }
