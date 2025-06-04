@@ -58,7 +58,7 @@ def callback():
 @app.route("/emotion-now", methods=["POST"])
 def emotion_now():
     try:
-        token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyM1FIWlMiLCJzdWIiOiJDSzlHM0giLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyb3h5IHJociByYWN0IiwiZXhwIjoxNzQ4MzczMDM1LCJpYXQiOjE3NDgzNDQyMzV9.T7ihLAKdhpKWJv4zE3nxAslmAfBWUb-ScLIXaTgo0-M"
+        token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyM1FIWlMiLCJzdWIiOiJDSzlHM0giLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyb3h5IHJociByYWN0IiwiZXhwIjoxNzQ5MDc5MDA4LCJpYXQiOjE3NDkwNTAyMDh9.3_cMpb1RSbDnmQQ7V9bHU7s92nnC94Ap7yA0_VsHSxo"
 
         hr, hr_log = get_heart_rate(token)
         spo2, spo2_log = get_spo2(token)
