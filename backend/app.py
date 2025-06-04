@@ -1,20 +1,8 @@
-import logging
 from flask_cors import CORS
 from flask import Flask, request, jsonify, redirect
 from emotion_analyzer import infer_emotion
 from fitbit_auth import get_authorize_url, get_token, exchange_code_for_token
 from fitbit_api import get_heart_rate, get_spo2, get_calories, get_activity_level
-
-# Logging 설정
-logging.basicConfig(
-    level=logging.INFO,
-    format='[%(asctime)s] %(levelname)s: %(message)s',
-    handlers=[
-        logging.FileHandler("app.log"),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://aurora-lighting-system.vercel.app"}})
@@ -31,13 +19,8 @@ def analyze():
     calories = data.get("calories")
     activity = data.get("activityLevel")
 
-    # emotion = infer_emotion(heart_rate, spo2, calories, activity)
-    # return jsonify({"emotion": emotion})
-    emotion, debug_info = infer_emotion(heart_rate, spo2, calories, activity)
-    return jsonify({
-        "emotion": emotion,
-        "calculation": debug_info
-    })
+    emotion = infer_emotion(heart_rate, spo2, calories, activity)
+    return jsonify({"emotion": emotion})
 
 app.secret_key = "super_secret"  # Render에서 환경변수로 관리 추천
 
