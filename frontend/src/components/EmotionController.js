@@ -33,6 +33,8 @@ function EmotionController({ onEmotionChange, interval = 5000 }) {
 
         const data = await response.json();
 
+        console.log("🎯 감정 응답 전체:", data);
+
         if (!manualOverride) {
           setEmotion(data.emotion);
           onEmotionChange(data.emotion);
