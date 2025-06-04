@@ -15,17 +15,17 @@ import React from "react";
 //   );
 // }
 
+
 function EmotionLog({ emotionResult }) {
-  if (!emotionResult) return null;
+  if (!emotionResult || !emotionResult.calculation) return null;
 
   return (
-    <div style={{ padding: "1rem", backgroundColor: "#f8f9fa", borderRadius: "8px", marginTop: "1rem" }}>
-      <h3>감정 결과</h3>
-      <p><strong>감정:</strong> {emotionResult.emotion}</p>
-      <p><strong>계산식:</strong></p>
-      <code style={{ whiteSpace: "pre-wrap", backgroundColor: "#e9ecef", padding: "0.5rem", display: "block" }}>
+    <div style={{ marginTop: "20px", padding: "10px", backgroundColor: "#f9f9f9", borderRadius: "8px" }}>
+      <h4>감정 계산 과정</h4>
+      <p><strong>감정 결과:</strong> {emotionResult.emotion}</p>
+      <pre style={{ backgroundColor: "#eee", padding: "10px", borderRadius: "5px" }}>
         {emotionResult.calculation}
-      </code>
+      </pre>
     </div>
   );
 }
