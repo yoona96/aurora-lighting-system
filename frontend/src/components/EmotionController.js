@@ -38,7 +38,7 @@ function EmotionController({ onEmotionChange, interval = 5000 }) {
         if (!manualOverride) {
           setEmotion(data.emotion);
           onEmotionChange(data.emotion);
-          setRawData(data); // ✅ 생체 데이터 저장
+          setRawData(data.debug);
           setLastUpdate(new Date().toLocaleTimeString()); // ✅ 갱신 시간 저장
         }
       } catch (err) {
@@ -114,10 +114,10 @@ function EmotionController({ onEmotionChange, interval = 5000 }) {
         ))}
       </div>
       <div style={{ marginTop: "20px", fontSize: "14px", textAlign: "center" }}>
-        <p>❤️ 심박수: {rawData.heartRate ?? "-"}</p>
+        <p>❤️ 심박수: {rawData.hr ?? "-"}</p>
         <p>🌬️ 산소포화도: {rawData.spo2 ?? "-"}</p>
-        <p>🔥 칼로리: {rawData.calories ?? "-"}</p>
-        <p>🏃 활동 레벨: {rawData.activityLevel ?? "-"}</p>
+        <p>🔥 칼로리: {rawData.cal ?? "-"}</p>
+        <p>🏃 활동 레벨: {rawData.act ?? "-"}</p>
         <p>⏰ 마지막 갱신: {lastUpdate || "-"}</p>
       </div>
     </div>
